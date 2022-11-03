@@ -45,21 +45,21 @@ class Helper:
 
         return timeupdate
 
-    def get_description_from(self, detail: BeautifulSoup) -> str:
+    def get_description_from_1(self, detail: BeautifulSoup) -> str:
         try:
             description = detail.find("div", class_="des").text
             return description
         except Exception as e:
             self.error_log(
                 f"Failed to get description from{detail}\n{e}",
-                log_file="get_description.log",
+                log_file="get_description1.log",
             )
             return ""
 
     def get_links_from(self, soup: BeautifulSoup) -> str:
         try:
-            mutiserver = soup.find("div", class_="mutiserver")
-            options = mutiserver.find_all("option")
+            selectServer = soup.find("select", id="selectServer")
+            options = selectServer.find_all("option")
 
             return [option.get("value") for option in options]
         except Exception as e:
@@ -622,7 +622,7 @@ class Helper:
 
     def get_description_from(self, barContentInfo: BeautifulSoup) -> str:
         des = barContentInfo.find("p", class_="des")
-        res = f"\n\nDescription: {self.format_text(des.text)}"
+        res = f"{self.format_text(des.text)}"
 
         try:
             for p in barContentInfo.find_all("p"):

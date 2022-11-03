@@ -24,7 +24,7 @@ class Crawler:
 
     def get_episode_details(self, href, title, genres) -> list:
         if "http" not in href:
-            href = CONFIG.KISSANIME_HOMEPAGE + href
+            href = CONFIG.KISSASIAN_HOMEPAGE + href
 
         res = {
             "title": title,
@@ -40,17 +40,17 @@ class Crawler:
             res["released"] = [helper.get_released_from(soup)]
 
             try:
-                description = (
-                    soup.find("article", class_="description")
-                    .text.strip()
-                    .strip("\n")
-                    .strip()
-                )
-                for replaceText in CONFIG.DESCRIPTION_REPLACE_TEXTS:
-                    description = description.replace(
-                        replaceText, CONFIG.DESCRIPTION_REPLACE_TO
-                    )
-                res["description"] = description
+                # description = (
+                #     soup.find("article", class_="description")
+                #     .text.strip()
+                #     .strip("\n")
+                #     .strip()
+                # )
+                # for replaceText in CONFIG.DESCRIPTION_REPLACE_TEXTS:
+                #     description = description.replace(
+                #         replaceText, CONFIG.DESCRIPTION_REPLACE_TO
+                #     )
+                res["description"] = ""
 
             except Exception as e:
                 helper.error_log(
@@ -89,7 +89,7 @@ class Crawler:
         genres = helper.get_genres_from(barContentInfo)
         status = helper.get_status_from(barContentInfo)
 
-        description = helper.get_description_from(barContentInfo)
+        description = helper.get_description_from(barContentInfo=barContentInfo)
 
         if not title:
             return
@@ -142,7 +142,7 @@ class Crawler:
         if soup == 404:
             return
 
-        list_drama = soup.find("ul", class_="list-drama")
+        list_drama = soup.find("div", class_="list-drama")
         if not list_drama:
             return
 
@@ -155,7 +155,7 @@ class Crawler:
                 href = item.find("a").get("href")
 
                 if "http" not in href:
-                    href = CONFIG.KISSANIME_HOMEPAGE + href
+                    href = CONFIG.KISSASIAN_HOMEPAGE + href
 
                 serie_details = self.crawl_anime(href=href)
                 helper.insert_serie(serie_details)
