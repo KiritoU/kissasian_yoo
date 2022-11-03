@@ -301,7 +301,7 @@ class Helper:
             )
 
         database.insert_into(table="term_relationships", data=(postId, 13853, 0))
-        # self.insert_taxonomy(postId, ["Japan"], "country")
+        self.insert_taxonomy(postId, movie_details["country"], "country")
         self.insert_taxonomy(postId, movie_details["released"], "release")
         self.insert_taxonomy(postId, movie_details["genre"], "genres")
 
@@ -396,7 +396,7 @@ class Helper:
 
         database.insert_into(table="term_relationships", data=(postId, 1, 0))
 
-        # self.insert_taxonomy(postId, ["Japan"], "country")
+        self.insert_taxonomy(postId, serie_details["country"], "country")
         self.insert_taxonomy(postId, serie_details["released"], "release")
         self.insert_taxonomy(postId, serie_details["genre"], "genres")
         # self.insert_taxonomy(postId, serie_details["status"], "status")
@@ -500,7 +500,7 @@ class Helper:
             )
 
         database.insert_into(table="term_relationships", data=(postId, 1, 0))
-        # self.insert_taxonomy(postId, ["Japan"], "country")
+        self.insert_taxonomy(postId, episode["country"], "country")
         self.insert_taxonomy(postId, episode["released"], "release")
         self.insert_taxonomy(postId, episode["genre"], "genres")
         # self.insert_taxonomy(postId, episode["status"], "status")
@@ -517,6 +517,7 @@ class Helper:
 
         for episode in serie_details["child_episode"]:
             episode["status"] = serie_details["status"]
+            episode["country"] = serie_details["country"]
             try:
                 self.insert_serie_episode(episode, serieId, thumbId)
                 sleep(0.1)
@@ -620,6 +621,27 @@ class Helper:
 
         return res
 
+    def get_country_from(self, barContentInfo: BeautifulSoup) -> str:
+        res = ""
+
+        try:
+            for p in barContentInfo.find_all("p"):
+                if p.find("span"):
+                    key = p.find("span").text.replace(":", "").strip()
+                    if "country" in key.lower():
+                        value = p.text.replace("Country:", "")
+                        value = self.format_text(value)
+
+                        return [value]
+
+        except Exception as e:
+            self.error_log(
+                msg=f"Failed to get_country_from\n{str(barContentInfo)}\n{e}",
+                log_file="helper.get_country_from.log",
+            )
+
+        return res
+
     def get_description_from(self, barContentInfo: BeautifulSoup) -> str:
         des = barContentInfo.find("p", class_="des")
         res = f"{self.format_text(des.text)}"
@@ -628,9 +650,9 @@ class Helper:
             for p in barContentInfo.find_all("p"):
                 if p.find("span"):
                     key = p.find("span").text.replace(":", "").strip()
-                    if "other" in key.lower():
+                    if "also" in key.lower():
 
-                        res = self.format_text(p.text) + res
+                        res = self.format_text(p.text) + "\nDescription: " + res
 
         except Exception as e:
             self.error_log(

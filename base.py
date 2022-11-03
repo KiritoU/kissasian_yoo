@@ -50,7 +50,9 @@ class Crawler:
                 #     description = description.replace(
                 #         replaceText, CONFIG.DESCRIPTION_REPLACE_TO
                 #     )
-                res["description"] = ""
+                res["description"] = CONFIG.EPISODE_DEFAULT_DESCRIPTION.format(
+                    title, title
+                )
 
             except Exception as e:
                 helper.error_log(
@@ -88,6 +90,7 @@ class Crawler:
 
         genres = helper.get_genres_from(barContentInfo)
         status = helper.get_status_from(barContentInfo)
+        country = helper.get_country_from(barContentInfo)
 
         description = helper.get_description_from(barContentInfo=barContentInfo)
 
@@ -99,7 +102,7 @@ class Crawler:
             "description": description,
             "genre": genres,
             "status": status,
-            "country": "",
+            "country": country,
             "released": "",
             "trailer": "",
             "picture": poster_url,
@@ -120,6 +123,14 @@ class Crawler:
             try:
                 a_element = item.find("a")
                 episodeTitle = helper.format_text(a_element.get("title"))
+                try:
+                    isRaw = a_element.find("span")
+                    if "raw" in str(isRaw).lower():
+                        episodeTitle = episodeTitle + " - RAW"
+                    else:
+                        episodeTitle = episodeTitle + " - EngSub"
+                except Exception as e:
+                    print(e)
                 episodeHref = a_element.get("href")
 
                 serie_details["child_episode"].append(
