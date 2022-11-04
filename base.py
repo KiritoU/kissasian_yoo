@@ -28,6 +28,7 @@ class Crawler:
 
         res = {
             "title": title,
+            "slug": helper.get_slug(href),
             "genre": genres,
             "trailer": "",
             "description": "",
@@ -99,6 +100,7 @@ class Crawler:
 
         serie_details = {
             "title": title,
+            "slug": helper.get_slug(href),
             "description": description,
             "genre": genres,
             "status": status,

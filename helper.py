@@ -45,6 +45,15 @@ class Helper:
 
         return timeupdate
 
+    def get_slug(self, href: str) -> str:
+        try:
+            return href.split("/")[-1]
+        except Exception as e:
+            self.error_log(
+                f"Failed to get slug: {href}\n{e}", log_file="helper.get_slug.log"
+            )
+            return ""
+
     def get_description_from_1(self, detail: BeautifulSoup) -> str:
         try:
             description = detail.find("div", class_="des").text
@@ -346,7 +355,9 @@ class Helper:
             "open",
             "closed",
             "",
-            slugify(serie_details["title"]),
+            slugify(serie_details["title"])
+            if not serie_details["slug"]
+            else serie_details["slug"],
             "",
             "",
             timeupdate,
@@ -438,7 +449,7 @@ class Helper:
             "open",
             "closed",
             "",
-            slugify(episode["title"]),
+            slugify(episode["title"]) if not episode["slug"] else episode["slug"],
             "",
             "",
             timeupdate,
