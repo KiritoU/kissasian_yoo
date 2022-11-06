@@ -410,7 +410,8 @@ class Helper:
         self.insert_taxonomy(postId, serie_details["country"], "country")
         self.insert_taxonomy(postId, serie_details["released"], "release")
         self.insert_taxonomy(postId, serie_details["genre"], "genres")
-        # self.insert_taxonomy(postId, serie_details["status"], "status")
+        self.insert_taxonomy(postId, [serie_details["status"]], "status")
+        self.insert_taxonomy(postId, [serie_details["othername"]], "othername")
 
         return [postId, thumbId]
 
@@ -514,7 +515,7 @@ class Helper:
         self.insert_taxonomy(postId, episode["country"], "country")
         self.insert_taxonomy(postId, episode["released"], "release")
         self.insert_taxonomy(postId, episode["genre"], "genres")
-        # self.insert_taxonomy(postId, episode["status"], "status")
+        self.insert_taxonomy(postId, [episode["status"]], "status")
 
     def insert_serie(self, serie_details: dict):
         try:
@@ -654,17 +655,10 @@ class Helper:
         return res
 
     def get_description_from(self, barContentInfo: BeautifulSoup) -> str:
-        des = barContentInfo.find("p", class_="des")
-        res = f"{self.format_text(des.text)}"
-
+        res = ""
         try:
-            for p in barContentInfo.find_all("p"):
-                if p.find("span"):
-                    key = p.find("span").text.replace(":", "").strip()
-                    if "also" in key.lower():
-
-                        res = self.format_text(p.text) + "\nDescription: " + res
-
+            des = barContentInfo.find("p", class_="des")
+            res = f"{self.format_text(des.text)}"
         except Exception as e:
             self.error_log(
                 msg=f"Failed to get description\n{str(barContentInfo)}\n{e}",
@@ -672,6 +666,26 @@ class Helper:
             )
 
         return res
+
+    def get_othername_from(self, barContentInfo: BeautifulSoup) -> str:
+        res = []
+
+        try:
+            for p in barContentInfo.find_all("p"):
+                if p.find("span"):
+                    key = p.find("span").text.replace(":", "").strip()
+                    if "also" in key.lower():
+                        othernames = p.find_all("a")
+                        for othername in othernames:
+                            res.append(othername.text)
+
+        except Exception as e:
+            self.error_log(
+                msg=f"Failed to get othername\n{str(barContentInfo)}\n{e}",
+                log_file="helper.get_othername_from.log",
+            )
+
+        return ", ".join(res)
 
 
 helper = Helper()

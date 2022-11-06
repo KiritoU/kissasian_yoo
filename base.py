@@ -94,6 +94,7 @@ class Crawler:
         country = helper.get_country_from(barContentInfo)
 
         description = helper.get_description_from(barContentInfo=barContentInfo)
+        othername = helper.get_othername_from(barContentInfo=barContentInfo)
 
         if not title:
             return
@@ -102,6 +103,7 @@ class Crawler:
             "title": title,
             "slug": helper.get_slug(href),
             "description": description,
+            "othername": othername,
             "genre": genres,
             "status": status,
             "country": country,
