@@ -411,7 +411,7 @@ class Helper:
         self.insert_taxonomy(postId, serie_details["released"], "release")
         self.insert_taxonomy(postId, serie_details["genre"], "genres")
         self.insert_taxonomy(postId, [serie_details["status"]], "status")
-        self.insert_taxonomy(postId, [serie_details["othername"]], "othername")
+        self.insert_taxonomy(postId, serie_details["othername"], "othername")
 
         return [postId, thumbId]
 
@@ -685,7 +685,7 @@ class Helper:
                 log_file="helper.get_othername_from.log",
             )
 
-        return ", ".join(res)
+        return res
 
 
 helper = Helper()
