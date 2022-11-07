@@ -355,9 +355,7 @@ class Helper:
             "open",
             "closed",
             "",
-            slugify(serie_details["title"])
-            if not serie_details["slug"]
-            else serie_details["slug"],
+            slugify(serie_details["title"]),
             "",
             "",
             timeupdate,
@@ -450,7 +448,7 @@ class Helper:
             "open",
             "closed",
             "",
-            slugify(episode["title"]) if not episode["slug"] else episode["slug"],
+            slugify(episode["title"]),
             "",
             "",
             timeupdate,
