@@ -527,6 +527,7 @@ class Helper:
             )
             return
 
+        serie_details["child_episode"].reverse()
         for episode in serie_details["child_episode"]:
             episode["status"] = serie_details["status"]
             episode["country"] = serie_details["country"]
