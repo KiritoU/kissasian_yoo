@@ -348,7 +348,9 @@ class Helper:
             0,
             timeupdate,
             timeupdate,
-            serie_details["description"],
+            f'Other name: {", ".join(serie_details["othername"])}\nDescription: {serie_details["description"]}'
+            if serie_details["othername"]
+            else serie_details["description"],
             serie_details["title"],
             "",
             "publish",
@@ -397,11 +399,11 @@ class Helper:
                 table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
             )
 
-        if serie_details["status"].lower() == "completed":
-            database.insert_into(
-                table="term_relationships",
-                data=(postId, CONFIG.COMPLETED_TAXONOMY_ID, 0),
-            )
+        # if serie_details["status"].lower() == "completed":
+        #     database.insert_into(
+        #         table="term_relationships",
+        #         data=(postId, CONFIG.COMPLETED_TAXONOMY_ID, 0),
+        #     )
 
         database.insert_into(table="term_relationships", data=(postId, 1, 0))
 
@@ -409,7 +411,7 @@ class Helper:
         self.insert_taxonomy(postId, serie_details["released"], "release")
         self.insert_taxonomy(postId, serie_details["genre"], "genres")
         self.insert_taxonomy(postId, [serie_details["status"]], "status")
-        self.insert_taxonomy(postId, serie_details["othername"], "othername")
+        # self.insert_taxonomy(postId, serie_details["othername"], "othername")
 
         return [postId, thumbId]
 
@@ -503,11 +505,11 @@ class Helper:
                 table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
             )
 
-        if episode["status"].lower() == "completed":
-            database.insert_into(
-                table="term_relationships",
-                data=(postId, CONFIG.COMPLETED_TAXONOMY_ID, 0),
-            )
+        # if episode["status"].lower() == "completed":
+        #     database.insert_into(
+        #         table="term_relationships",
+        #         data=(postId, CONFIG.COMPLETED_TAXONOMY_ID, 0),
+        #     )
 
         database.insert_into(table="term_relationships", data=(postId, 1, 0))
         self.insert_taxonomy(postId, episode["country"], "country")
