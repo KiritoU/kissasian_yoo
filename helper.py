@@ -394,10 +394,10 @@ class Helper:
                 data=pmeta,
             )
 
-        if serie_details["status"].lower() == "ongoing":
-            database.insert_into(
-                table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
-            )
+        # if serie_details["status"].lower() == "ongoing":
+        #     database.insert_into(
+        #         table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
+        #     )
 
         # if serie_details["status"].lower() == "completed":
         #     database.insert_into(
@@ -500,10 +500,10 @@ class Helper:
                 data=pmeta,
             )
 
-        if episode["status"].lower() == "ongoing":
-            database.insert_into(
-                table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
-            )
+        # if episode["status"].lower() == "ongoing":
+        #     database.insert_into(
+        #         table="term_relationships", data=(postId, CONFIG.ONGOING_TAXONOMY_ID, 0)
+        #     )
 
         # if episode["status"].lower() == "completed":
         #     database.insert_into(
