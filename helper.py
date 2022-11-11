@@ -9,7 +9,6 @@ from slugify import slugify
 
 
 from _db import database
-from notifications import Notification
 
 
 from settings import CONFIG
@@ -425,7 +424,8 @@ class Helper:
             table="posts", condition=f"post_title LIKE '{checkName}'"
         )
         if backendSerieEpisode:
-            Notification(f"{serieEpisodeName} might be duplicated!").send()
+            print(f"{serieEpisodeName} might be duplicated!")
+            # Notification(f"{serieEpisodeName} might be duplicated!").send()
 
     def insert_serie_episode(self, episode: dict, serieId: int, thumbId: int):
         serieEpisodeName = episode["title"].replace("'", "''")
