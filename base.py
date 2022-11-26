@@ -155,15 +155,15 @@ class Crawler:
         soup = self.crawl_soup(url)
 
         if soup == 404:
-            return
+            return 0
 
         list_drama = soup.find("div", class_="list-drama")
         if not list_drama:
-            return
+            return 0
 
         items = list_drama.find_all("div", class_="item")
         if not items:
-            return
+            return 0
 
         for item in items:
             try:
@@ -179,3 +179,5 @@ class Crawler:
                 helper.error_log(
                     f"Failed to get href\n{item}\n{e}", "base.crawl_page.log"
                 )
+
+        return 1
